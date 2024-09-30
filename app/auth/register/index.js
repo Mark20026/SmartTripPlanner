@@ -10,7 +10,7 @@ import {
 import React, { useState } from "react";
 import { Colors } from "@/constants/Colors";
 import { useRouter } from "expo-router";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth"; // Importáljuk az updateProfile-t
 import { auth } from "./../../../configs/FirebaseConfig";
 
 const { width, height } = Dimensions.get("window");
@@ -23,32 +23,27 @@ export default function Register() {
 
   const router = useRouter();
 
-  // Helper function to validate email format
   const validateEmail = (email) => {
     const re = /\S+@\S+\.\S+/;
     return re.test(email);
   };
 
   const OnCreateAccount = () => {
-    // Check if all fields are filled
     if (!fullName || !email || !password || !passwordRepeat) {
       ToastAndroid.show("Please fill out all fields", ToastAndroid.SHORT);
       return;
     }
 
-    // Validate email format
     if (!validateEmail(email)) {
       ToastAndroid.show("Invalid email format", ToastAndroid.SHORT);
       return;
     }
 
-    // Check if passwords match
     if (password !== passwordRepeat) {
       ToastAndroid.show("Passwords do not match", ToastAndroid.SHORT);
       return;
     }
 
-    // Password length validation
     if (password.length < 6) {
       ToastAndroid.show(
         "Password must be at least 6 characters",
@@ -60,11 +55,23 @@ export default function Register() {
     // Firebase authentication
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // Signed up successfully
         const user = userCredential.user;
-        console.log(user);
-        ToastAndroid.show("Account created successfully!", ToastAndroid.SHORT);
-        router.push("/trips"); // Navigate to home or other route after registration
+
+        // Frissítsük a felhasználó profilját a névvel
+        updateProfile(user, {
+          displayName: fullName, // Beállítjuk a teljes nevet
+        })
+          .then(() => {
+            // Sikeres frissítés után navigálunk
+            ToastAndroid.show(
+              "Account created successfully!",
+              ToastAndroid.SHORT
+            );
+            router.push("/trips"); // Továbbítás a "Trips" oldalra
+          })
+          .catch((error) => {
+            ToastAndroid.show("Failed to update profile", ToastAndroid.SHORT);
+          });
       })
       .catch((error) => {
         const errorMessage = error.message;
@@ -76,7 +83,6 @@ export default function Register() {
     <View style={styles.screen}>
       <Text style={styles.welcome}>Create New Account</Text>
 
-      {/* Full Name Input */}
       <TextInput
         style={styles.input}
         placeholder="Full Name"
@@ -86,7 +92,6 @@ export default function Register() {
         autoCapitalize="words"
       />
 
-      {/* Email Input */}
       <TextInput
         style={styles.input}
         placeholder="Email address"
@@ -97,7 +102,6 @@ export default function Register() {
         autoCapitalize="none"
       />
 
-      {/* Password Input */}
       <TextInput
         style={styles.input}
         placeholder="Password"
@@ -108,7 +112,6 @@ export default function Register() {
         autoCapitalize="none"
       />
 
-      {/* Password Repeat Input */}
       <TextInput
         style={styles.input}
         placeholder="Repeat Password"
@@ -119,12 +122,10 @@ export default function Register() {
         autoCapitalize="none"
       />
 
-      {/* Register Button */}
       <TouchableOpacity onPress={OnCreateAccount} style={styles.button}>
         <Text style={styles.buttonText}>Register</Text>
       </TouchableOpacity>
 
-      {/* Login Button */}
       <TouchableOpacity
         style={styles.button2}
         onPress={() => router.push("auth/login")}
@@ -190,4 +191,5 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "white",
   },
+  
 });
