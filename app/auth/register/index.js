@@ -1,3 +1,4 @@
+import axios from "axios";
 import {
   View,
   Text,
@@ -10,8 +11,6 @@ import {
 import React, { useState } from "react";
 import { Colors } from "@/constants/Colors";
 import { useRouter } from "expo-router";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth"; // Importáljuk az updateProfile-t
-import { auth } from "./../../../configs/FirebaseConfig";
 
 const { width, height } = Dimensions.get("window");
 
@@ -52,29 +51,24 @@ export default function Register() {
       return;
     }
 
-    // Firebase authentication
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-
-        // Frissítsük a felhasználó profilját a névvel
-        updateProfile(user, {
-          displayName: fullName, // Beállítjuk a teljes nevet
-        })
-          .then(() => {
-            // Sikeres frissítés után navigálunk
-            ToastAndroid.show(
-              "Account created successfully!",
-              ToastAndroid.SHORT
-            );
-            router.push("/trips"); // Továbbítás a "Trips" oldalra
-          })
-          .catch((error) => {
-            ToastAndroid.show("Failed to update profile", ToastAndroid.SHORT);
-          });
+    // API hívás a saját backendhez
+    axios
+      .post("http://192.168.0.112:3000/api/signup", {
+        email,
+        password,
+        firstName: fullName.split(" ")[0], // Az első név kiválasztása
+        lastName: fullName.split(" ").slice(1).join(" "), // A többi név összeillesztése
+      })
+      .then((response) => {
+        // Sikeres regisztráció
+        ToastAndroid.show("Account created successfully!", ToastAndroid.SHORT);
+        router.push("/trips"); // Navigálás az "Trips" oldalra
       })
       .catch((error) => {
-        const errorMessage = error.message;
+        console.log("Error:", error); // Írd ki az Axios hibát a konzolba
+        console.log("Error response:", error.response); // Ha van válasz, írd ki
+        console.log("Error message:", error.message);
+        const errorMessage = error.response?.data?.msg || "Registration failed";
         ToastAndroid.show(errorMessage, ToastAndroid.SHORT);
       });
   };
@@ -191,5 +185,4 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "white",
   },
-  
 });

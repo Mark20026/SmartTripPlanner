@@ -13,7 +13,6 @@ import { Colors } from "@/constants/Colors";
 
 const { width, height } = Dimensions.get("window");
 
-
 export default function Search() {
   const navigation = useNavigation();
   const { tripData, setTripData } = useContext(CreateTripContext);

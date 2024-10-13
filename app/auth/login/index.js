@@ -11,8 +11,7 @@ import {
 import React, { useState } from "react";
 import { Colors } from "@/constants/Colors";
 import { useRouter } from "expo-router";
-import { auth } from "./../../../configs/FirebaseConfig";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import axios from "axios"; // Axios importálása
 
 // Get screen dimensions
 const { width, height } = Dimensions.get("window");
@@ -20,7 +19,6 @@ const { width, height } = Dimensions.get("window");
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const router = useRouter();
 
   // Helper function to validate email format
@@ -42,42 +40,29 @@ export default function Login() {
       return;
     }
 
-    // Sign in with Firebase Authentication
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in successfully
-        const user = userCredential.user;
-        console.log(user);
+    // API call to the backend
+    axios
+      .post("http://192.168.0.112:3000/api/login", {
+        email,
+        password,
+      })
+      .then((response) => {
+        // Successful login
+        const { token, userId } = response.data;
+        console.log("Login successful", response.data);
         ToastAndroid.show("Login successful!", ToastAndroid.SHORT);
-        router.push("/trips"); // Navigate to home or another screen
+
+        // Store the token (if needed)
+        // You can use AsyncStorage or any state management library here
+        // Example: AsyncStorage.setItem("userToken", token);
+
+        // Navigate to trips
+        router.push("/trips");
       })
       .catch((error) => {
-        const errorCode = error.code;
-
-        // Handle specific error codes
-        if (errorCode === "auth/invalid-credential") {
-          ToastAndroid.show(
-            "Invalid credentials. Please try again.",
-            ToastAndroid.SHORT
-          );
-        } else if (errorCode === "auth/wrong-password") {
-          ToastAndroid.show(
-            "Incorrect password. Please try again.",
-            ToastAndroid.SHORT
-          );
-        } else if (errorCode === "auth/user-not-found") {
-          ToastAndroid.show(
-            "No user found with this email.",
-            ToastAndroid.SHORT
-          );
-        } else {
-          ToastAndroid.show(
-            "Login failed. Please try again.",
-            ToastAndroid.SHORT
-          );
-        }
-
-        console.log(error.message);
+        const errorMessage = error.response?.data?.msg || "Login failed";
+        ToastAndroid.show(errorMessage, ToastAndroid.SHORT);
+        console.log("Login error:", error.message);
       });
   };
 
@@ -149,7 +134,7 @@ const styles = StyleSheet.create({
     textShadowRadius: 1,
   },
   input: {
-    width: width * 0.8, // 80% of screen width
+    width: width * 0.8,
     height: 50,
     backgroundColor: "#fff",
     borderRadius: 8,

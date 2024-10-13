@@ -16,8 +16,8 @@ const { width, height } = Dimensions.get("window");
 
 export default function Calendar() {
   const navigation = useNavigation();
-  const [startDate, setStartDate] = useState();
-  const [endDate, setEndDate] = useState();
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   const { tripData, setTripData } = useContext(CreateTripContext);
 
   const onDateChange = (date, type) => {
@@ -30,14 +30,16 @@ export default function Calendar() {
   };
   const OnDateSelectionContinue = () => {
     if (!startDate && !endDate) {
+      console.log("Please select both start and end dates.");
+
       return;
     }
     const totalNoDays = endDate.diff(startDate, "days");
     console.log(totalNoDays + 1);
     setTripData({
       ...tripData,
-      startDate: startDate,
-      endDate: endDate,
+      startDate: startDate.toISOString(),
+      endDate: endDate.toISOString(),
       totalNoDays: totalNoDays + 1,
     });
   };
@@ -64,12 +66,7 @@ export default function Calendar() {
         }}
       />
 
-      <TouchableOpacity
-        style={styles.button2}
-        onPress={OnDateSelectionContinue}
-      >
-        <Text style={styles.buttonText2}>Log In</Text>
-      </TouchableOpacity>
+      
     </View>
   );
 }
