@@ -19,6 +19,7 @@ export default function Calendar() {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const { tripData, setTripData } = useContext(CreateTripContext);
+  const router = useRouter();
 
   const onDateChange = (date, type) => {
     console.log(date, type);
@@ -42,6 +43,7 @@ export default function Calendar() {
       endDate: endDate.toISOString(),
       totalNoDays: totalNoDays + 1,
     });
+    router.push("/trip/budget")
   };
 
   useEffect(() => {
@@ -65,8 +67,12 @@ export default function Calendar() {
           color: "white",
         }}
       />
-
-      
+      <TouchableOpacity
+        style={styles.button}
+        onPress={OnDateSelectionContinue}
+      >
+        <Text style={styles.buttonText}>Continue</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -83,5 +89,18 @@ const styles = StyleSheet.create({
     fontSize: height * 0.04,
     color: "black",
     marginBottom: height * 0.06,
+  },
+  button: {
+    paddingVertical: height * 0.03,
+    paddingHorizontal: width * 0.25,
+    backgroundColor: Colors.SECONDARY,
+    borderRadius: 10,
+    marginTop: height * 0.3,
+  },
+  buttonText: {
+    fontSize: width * 0.04,
+    fontFamily: "roboto-bold",
+    textAlign: "center",
+    color: "white",
   },
 });

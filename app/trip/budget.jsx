@@ -3,23 +3,23 @@ import {
   Text,
   StyleSheet,
   Dimensions,
-  TouchableOpacity,
   FlatList,
+  TouchableOpacity,
 } from "react-native";
 import React, { useEffect, useState, useContext } from "react";
 import { useNavigation, useRouter } from "expo-router";
 import { Colors } from "../../constants/Colors.ts";
-import { SelectTravelerList } from "../../constants/options.js";
 import OptionCard from "../../components/TripOptions/OptionCard";
+import { SelectBudgetList } from "../../constants/options.js";
 import { CreateTripContext } from "./../../context/CreateTripContext.js";
 
 const { width, height } = Dimensions.get("window");
 
-export default function TravelerCount() {
+export default function Budget() {
   const navigation = useNavigation();
-  const router = useRouter();
-  const [selectedTraveler, setSelectedTraveler] = useState();
+  const [selectedBudget, setSelectedBudget] = useState();
   const { tripData, setTripData } = useContext(CreateTripContext);
+  const router = useRouter();
 
   useEffect(() => {
     navigation.setOptions({
@@ -30,36 +30,33 @@ export default function TravelerCount() {
   }, []);
 
   useEffect(() => {
-    setTripData({ ...tripData, travelerCount: selectedTraveler });
-  }, [selectedTraveler]);
-
+    setTripData({ ...tripData, budget: selectedBudget });
+  }, [selectedBudget]);
   return (
     <View style={styles.screen}>
-      <Text style={styles.heading}>Who's travelling</Text>
-
-      <Text style={styles.description}>
-        Select how many people are travelling
+      <Text style={styles.heading}>Budget</Text>
+      <Text style={styles.subheading}>
+        Choose your preferred spending level for the trip.
       </Text>
-
       <FlatList
-        data={SelectTravelerList}
+        data={SelectBudgetList}
         renderItem={({ item, index }) => (
           <TouchableOpacity
             onPress={() => {
-              setSelectedTraveler(item);
+              setSelectedBudget(item);
             }}
             style={{
               marginVertical: 10,
             }}
           >
-            <OptionCard option={item} selectedOption={selectedTraveler} />
+            <OptionCard option={item} selectedOption={selectedBudget} />
           </TouchableOpacity>
         )}
       />
 
       <TouchableOpacity
         style={styles.button}
-        onPress={() => router.push("/trip/calendar")}
+        onPress={() => router.push("/trip/trip_review")}
       >
         <Text style={styles.buttonText}>Continue</Text>
       </TouchableOpacity>
@@ -70,17 +67,17 @@ export default function TravelerCount() {
 const styles = StyleSheet.create({
   screen: {
     padding: width * 0.06,
-    paddingTop: height * 0.15,
+    paddingTop: height * 0.13,
     backgroundColor: "white",
     height: "100%",
   },
   heading: {
     fontFamily: "roboto-bold",
-    fontSize: height * 0.035,
+    fontSize: height * 0.04,
     color: "black",
+    marginBottom: height * 0.02,
   },
-  description: {
-    marginTop: height * 0.03,
+  subheading: {
     fontFamily: "roboto",
     fontSize: height * 0.02,
     color: "gray",
@@ -91,7 +88,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: width * 0.25,
     backgroundColor: Colors.SECONDARY,
     borderRadius: 10,
-    marginBottom: height * 0.02,
   },
   buttonText: {
     fontSize: width * 0.04,

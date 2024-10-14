@@ -4,13 +4,13 @@ import { Colors } from "@/constants/Colors";
 
 const { width, height } = Dimensions.get("window");
 
-export default function OptionCard({ option, selectedTraveler }) {
-  const isSelected = selectedTraveler?.id === option?.id;
+export default function OptionCard({ option, selectedOption }) {
+  const isSelected = selectedOption?.id === option?.id;
   return (
     <View
       style={[
         {
-          padding: height * 0.015,
+          padding: height * 0.02,
           display: "flex",
           flexDirection: "row",
           justifyContent: "space-between",
@@ -32,7 +32,7 @@ export default function OptionCard({ option, selectedTraveler }) {
         </Text>
         <Text
           style={{
-            fontSize: height * 0.02,
+            fontSize: height * 0.017,
             fontFamily: "roboto",
             color: "gray",
           }}
