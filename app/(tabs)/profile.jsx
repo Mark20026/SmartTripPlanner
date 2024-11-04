@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { auth } from "./../../configs/FirebaseConfig.js";
 import { Colors } from "./../../constants/Colors.ts";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useRouter } from "expo-router"; // expo-router a navigációhoz
@@ -44,7 +43,7 @@ export default function Profile() {
       <View style={{ alignItems: "center" }}>
         <View style={styles.imageContainer}>
           <Image
-            source={require("./../../assets/images/profile.png")} 
+            source={require("./../../assets/images/profile.png")}
             style={styles.profileImage}
           />
         </View>

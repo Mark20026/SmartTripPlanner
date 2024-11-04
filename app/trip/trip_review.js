@@ -88,7 +88,7 @@ export default function TripReview() {
       </View>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => router.push("/trip/trip_review")}
+        onPress={() => router.replace("/trip/loading_trip")}
       >
         <Text style={styles.buttonText}>Generate Trip</Text>
       </TouchableOpacity>

@@ -12,6 +12,7 @@ import React, { useState } from "react";
 import { Colors } from "@/constants/Colors";
 import { useRouter } from "expo-router";
 import axios from "axios"; // Axios importálása
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Get screen dimensions
 const { width, height } = Dimensions.get("window");
@@ -27,7 +28,7 @@ export default function Login() {
     return re.test(email);
   };
 
-  const onSignIn = () => {
+  const onSignIn = async () => {
     // Check if email and password fields are filled
     if (!email || !password) {
       ToastAndroid.show("Please fill out all fields", ToastAndroid.SHORT);
@@ -40,30 +41,34 @@ export default function Login() {
       return;
     }
 
-    // API call to the backend
-    axios
-      .post("http://192.168.0.112:3000/api/login", {
+    try {
+      // API call to the backend
+      const response = await axios.post("http://192.168.0.112:3000/api/login", {
         email,
         password,
-      })
-      .then((response) => {
-        // Successful login
-        const { token, userId } = response.data;
-        console.log("Login successful", response.data);
-        ToastAndroid.show("Login successful!", ToastAndroid.SHORT);
-
-        // Store the token (if needed)
-        // You can use AsyncStorage or any state management library here
-        // Example: AsyncStorage.setItem("userToken", token);
-
-        // Navigate to trips
-        router.push("/trips");
-      })
-      .catch((error) => {
-        const errorMessage = error.response?.data?.msg || "Login failed";
-        ToastAndroid.show(errorMessage, ToastAndroid.SHORT);
-        console.log("Login error:", error.message);
       });
+
+      // Successful login
+      const { token, userId } = response.data;
+      console.log("Login successful", response.data);
+      ToastAndroid.show("Login successful!", ToastAndroid.SHORT);
+
+      // Store the token
+      await AsyncStorage.setItem("auth-token", token); // Token elmentése
+      await AsyncStorage.setItem("userId", userId); // (opcionális) userId elmentése
+      await AsyncStorage.setItem("email", email);
+
+      console.log(token);
+      console.log(userId);
+      console.log(email);
+
+      // Navigate to trips
+      router.push("/trips");
+    } catch (error) {
+      const errorMessage = error.response?.data?.msg || "Login failed";
+      ToastAndroid.show(errorMessage, ToastAndroid.SHORT);
+      console.log("Login error:", error.message);
+    }
   };
 
   return (

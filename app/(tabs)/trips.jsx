@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { auth } from "./../../configs/FirebaseConfig.js";
 import { Colors } from "./../../constants/Colors.ts";
 import { useRouter } from "expo-router";
 
@@ -16,14 +15,9 @@ export default function Trips() {
   const [userName, setUserName] = useState("");
   const [greeting, setGreeting] = useState("Welcome");
 
-  const router=useRouter();
+  const router = useRouter();
 
   useEffect(() => {
-    const currentUser = auth.currentUser;
-    if (currentUser) {
-      setUserName(currentUser.displayName);
-    }
-
     // Napszak alapú üdvözlés
     const currentHour = new Date().getHours();
     if (currentHour < 12) {
@@ -47,7 +41,10 @@ export default function Trips() {
         <Text style={styles.subTextNoTrip2}>
           Let AI help you design your perfect trip. Get started now!
         </Text>
-        <TouchableOpacity onPress={()=>router.push('/trip/search')} style={styles.button}>
+        <TouchableOpacity
+          onPress={() => router.push("/trip/search")}
+          style={styles.button}
+        >
           <Text style={styles.buttonText}>Create My Trip</Text>
         </TouchableOpacity>
       </View>
