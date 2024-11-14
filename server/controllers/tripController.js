@@ -9,6 +9,7 @@ const tripRouter = express.Router();
 
 const TripSchema = new mongoose.Schema({
   email: { type: String, required: true },
+  tripData: { type: Object, required: true },
   response: { type: Object, required: true },
 });
 
@@ -16,13 +17,13 @@ const Trip = mongoose.model("Trip", TripSchema);
 
 tripRouter.post("/api/getTripJson", async (req, res) => {
   try {
-    const { response, email } = req.body;
+    const { response, email, tripData } = req.body;
 
     const parsedResponse =
       typeof response === "string" ? JSON.parse(response) : response;
 
     try {
-      const newTrip = new Trip({ email, response: parsedResponse });
+      const newTrip = new Trip({ email, tripData, response: parsedResponse });
       await newTrip.save();
 
       // Csak akkor küldd el a választ, ha a mentés sikerült
@@ -35,6 +36,32 @@ tripRouter.post("/api/getTripJson", async (req, res) => {
   } catch (error) {
     console.error("Error saving trip data:", error);
     res.status(500).json({ error: "Failed to save trip data" });
+  }
+});
+
+tripRouter.get("/api/getInfo", async (req, res) => {
+  try {
+    const { email } = req.query; // Az email lekérdezési paraméterként érkezik
+
+    if (!email) {
+      return res.status(400).json({ error: "Email parameter is required" });
+    }
+
+    // Lekérjük az adatokat az adatbázisból az email alapján
+    const trips = await Trip.find({ email });
+
+    // Ha nem található adat az adott emailhez
+    if (!trips || trips.length === 0) {
+      return res
+        .status(404)
+        .json({ error: "No trip data found for this email" });
+    }
+
+    // Sikeres lekérés esetén visszaadjuk a találatokat
+    res.status(200).json(trips);
+  } catch (error) {
+    console.error("Error fetching trip data:", error);
+    res.status(500).json({ error: "Failed to fetch trip data" });
   }
 });
 

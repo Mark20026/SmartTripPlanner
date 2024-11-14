@@ -30,7 +30,7 @@ export default function LoadingTrip() {
       GenerateAiTrip();
       setHasGeneratedTrip(true);
     }
-  }, [tripData, hasGeneratedTrip, email]); // Az email is a függőségek között
+  }, [tripData, hasGeneratedTrip, email]);
 
   const GenerateAiTrip = async () => {
     setLoading(true);
@@ -42,7 +42,9 @@ export default function LoadingTrip() {
       .replace("{totalDays}", tripData?.totalNoDays)
       .replace("{totalNight}", tripData?.totalNoDays - 1)
       .replace("{traveler}", tripData?.travelerCount?.title)
-      .replace("{budget}", tripData?.budget?.title);
+      .replace("{budget}", tripData?.budget?.title)
+      .replace("{totalDays}", tripData?.totalNoDays)
+      .replace("{totalNight}", tripData?.totalNoDays - 1);
 
     console.log(FINAL_PROMPT);
 
@@ -72,7 +74,7 @@ export default function LoadingTrip() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ response: tripDataJson, email }), 
+          body: JSON.stringify({ response: tripDataJson, email, tripData }),
         }
       );
 

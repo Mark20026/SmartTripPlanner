@@ -4,21 +4,24 @@ import {
   Dimensions,
   StyleSheet,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Colors } from "./../../constants/Colors.ts";
 import { useRouter } from "expo-router";
+import UserTripList from "./../../components/MyTrips/UserTripList";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { width, height } = Dimensions.get("window");
 
 export default function Trips() {
   const [userName, setUserName] = useState("");
   const [greeting, setGreeting] = useState("Welcome");
-
+  const [userTrips, setUserTrips] = useState([]);
   const router = useRouter();
 
+  // Napszak alapú üdvözlés
   useEffect(() => {
-    // Napszak alapú üdvözlés
     const currentHour = new Date().getHours();
     if (currentHour < 12) {
       setGreeting("Good morning ☀️");
@@ -29,32 +32,73 @@ export default function Trips() {
     }
   }, []);
 
+  // Trip adatok lekérése
+  useEffect(() => {
+    const fetchUserTrips = async () => {
+      try {
+        // Email lekérése az AsyncStorage-ból
+        const userEmail = await AsyncStorage.getItem("email");
+
+        if (!userEmail) {
+          console.error("No email found in AsyncStorage");
+          return;
+        }
+
+        // Trip adatok lekérése a backend API-ról
+        const response = await fetch(
+          `http://192.168.0.112:3000/api/getInfo?email=${userEmail}`
+        );
+        const data = await response.json();
+
+        if (response.ok) {
+          setUserTrips(data);
+          console.log(userTrips); // Állapotba mentjük a trip adatokat
+        } else {
+          console.error("Failed to fetch trips:", data.error);
+        }
+      } catch (error) {
+        console.error("Error fetching user trips:", error);
+      }
+    };
+
+    fetchUserTrips();
+  }, []);
+
   return (
-    <View style={styles.screen}>
+    <ScrollView style={styles.screen}>
       <View>
         <Text style={styles.heading}>{greeting}</Text>
         <Text style={styles.headingName}>{userName ? userName : "Name"}</Text>
-        <Text style={styles.subText}>Your trips will be displayed here.</Text>
       </View>
       <View style={styles.noTrip}>
-        <Text style={styles.subTextNoTrip}>No trips yet!</Text>
-        <Text style={styles.subTextNoTrip2}>
-          Let AI help you design your perfect trip. Get started now!
-        </Text>
-        <TouchableOpacity
-          onPress={() => router.push("/trip/search")}
-          style={styles.button}
-        >
-          <Text style={styles.buttonText}>Create My Trip</Text>
-        </TouchableOpacity>
+        {userTrips.length === 0 ? (
+          <>
+            <Text style={styles.subText}>
+              Your trips will be displayed here.
+            </Text>
+
+            <Text style={styles.subTextNoTrip}>No trips yet!</Text>
+            <Text style={styles.subTextNoTrip2}>
+              Let AI help you design your perfect trip. Get started now!
+            </Text>
+            <TouchableOpacity
+              onPress={() => router.push("/trip/search")}
+              style={styles.button}
+            >
+              <Text style={styles.buttonText}>Create My Trip</Text>
+            </TouchableOpacity>
+          </>
+        ) : (
+          <UserTripList userTrips={userTrips} />
+        )}
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   screen: {
-    padding: width * 0.06,
+    padding: width * 0.02,
     paddingTop: height * 0.08,
     backgroundColor: "white",
     height: "100%",
