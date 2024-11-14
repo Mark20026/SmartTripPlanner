@@ -25,7 +25,7 @@ export default function OptionCard({ option, selectedOption }) {
         <Text
           style={{
             fontSize: height * 0.025,
-            fontFamily: "roboto-bold",
+            fontFamily: "montserrat-bold",
           }}
         >
           {option?.title}
@@ -33,7 +33,7 @@ export default function OptionCard({ option, selectedOption }) {
         <Text
           style={{
             fontSize: height * 0.017,
-            fontFamily: "roboto",
+            fontFamily: "montserrat",
             color: "gray",
           }}
         >

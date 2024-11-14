@@ -9,13 +9,13 @@ import {
 import React, { useEffect, useState } from "react";
 import { Colors } from "./../../constants/Colors.ts";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { useRouter } from "expo-router"; // expo-router a navigációhoz
+import { useRouter } from "expo-router";
 
 const { width, height } = Dimensions.get("window");
 
 export default function Profile() {
   const [userName, setUserName] = useState("");
-  const router = useRouter(); // A navigációhoz
+  const router = useRouter();
 
   useEffect(() => {
     const currentUser = auth.currentUser;
@@ -86,20 +86,20 @@ const styles = StyleSheet.create({
     borderRadius: height,
   },
   heading: {
-    fontFamily: "roboto-bold",
+    fontFamily: "montserrat-bold",
     fontSize: height * 0.04,
     color: "black",
     marginBottom: "10%",
   },
   porifleName: {
-    fontFamily: "roboto-medium",
+    fontFamily: "montserrat-medium",
     fontSize: height * 0.04,
     color: "black",
     marginTop: "5%",
     marginBottom: "15%",
   },
   settingText: {
-    fontFamily: "roboto",
+    fontFamily: "montserrat",
     fontSize: height * 0.03,
     color: "black",
     marginTop: "5%",

@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: width * 0.08,
-    fontFamily: "roboto-bold",
+    fontFamily: "montserrat-bold",
     color: "white",
     textAlign: "center",
     paddingTop: 50,
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: width * 0.045,
-    fontFamily: "roboto",
+    fontFamily: "montserrat",
     color: "#dbdee1",
     textAlign: "center",
     paddingTop: 30,
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: width * 0.04,
-    fontFamily: "roboto-bold",
+    fontFamily: "montserrat-bold",
     textAlign: "center",
   },
 });

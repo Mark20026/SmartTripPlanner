@@ -1,7 +1,7 @@
 import { View, Text } from "react-native";
 import React from "react";
 import { Tabs } from "expo-router";
-import FontAwesome from "@expo/vector-icons/FontAwesome"; // Import FontAwesome icons
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Colors } from "@/constants/Colors";
 
 export default function TabLayout() {
@@ -12,10 +12,10 @@ export default function TabLayout() {
           let iconName;
 
           if (route.name === "trips") {
-            iconName = focused ? "map" : "map-o"; // Different icons for focused and unfocused
+            iconName = focused ? "map" : "map-o";
             return <FontAwesome name={iconName} size={size} color={color} />;
           } else if (route.name === "add_trips") {
-            iconName = focused ? "plus" : "plus"; // Different icons for focused and unfocused
+            iconName = focused ? "plus" : "plus";
 
             // Wrapping the icon in a circular view
             return (
@@ -23,11 +23,11 @@ export default function TabLayout() {
                 style={{
                   width: 60,
                   height: 60,
-                  backgroundColor: Colors.SECONDARY, // Background color for the circle
-                  borderRadius: 30, // Half of width/height to make it a perfect circle
+                  backgroundColor: Colors.SECONDARY,
+                  borderRadius: 30,
                   justifyContent: "center",
                   alignItems: "center",
-                  marginBottom: 20, // To elevate the icon above the others
+                  marginBottom: 20,
                 }}
               >
                 <FontAwesome name={iconName} size={size} color="white" />
@@ -38,10 +38,10 @@ export default function TabLayout() {
             return <FontAwesome name={iconName} size={size} color={color} />;
           }
         },
-        tabBarActiveTintColor: Colors.SECONDARY, // Custom color when tab is active
-        tabBarInactiveTintColor: "white", // Color when tab is inactive
-        tabBarLabelStyle: { fontSize: 12, fontFamily: "roboto-bold" }, // Custom label font and size
-        tabBarStyle: { backgroundColor: Colors.PRIMARY, height: 60 }, // Customize the tab bar background and height
+        tabBarActiveTintColor: Colors.SECONDARY,
+        tabBarInactiveTintColor: "white",
+        tabBarLabelStyle: { fontSize: 12, fontFamily: "montserrat-bold" },
+        tabBarStyle: { backgroundColor: Colors.PRIMARY, height: 60 },
         headerShown: false, // Hide header
       })}
     >

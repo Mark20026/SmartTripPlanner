@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
   },
   welcome: {
     padding: width * 0.06,
-    fontFamily: "roboto-bold",
+    fontFamily: "montserrat-bold",
     fontSize: height * 0.04,
     color: "white",
     marginTop: "30%",
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     marginTop: "5%",
     color: Colors.PRIMARY,
-    fontFamily: "roboto",
+    fontFamily: "montserrat",
     fontSize: height * 0.02,
   },
   button: {
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: width * 0.04,
-    fontFamily: "roboto-bold",
+    fontFamily: "montserrat-bold",
     textAlign: "center",
   },
   button2: {
@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
   },
   buttonText2: {
     fontSize: width * 0.04,
-    fontFamily: "roboto-bold",
+    fontFamily: "montserrat-bold",
     textAlign: "center",
     color: "white",
   },

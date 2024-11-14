@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
   },
   buttonText2: {
     fontSize: width * 0.03,
-    fontFamily: "roboto-bold",
+    fontFamily: "montserrat-bold",
     textAlign: "center",
     color: "white",
   },

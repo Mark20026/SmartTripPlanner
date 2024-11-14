@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   heading: {
-    fontFamily: "roboto-bold",
+    fontFamily: "montserrat-bold",
     fontSize: height * 0.04,
     color: "black",
     marginBottom: height * 0.06,
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: width * 0.04,
-    fontFamily: "roboto-bold",
+    fontFamily: "montserrat-bold",
     textAlign: "center",
     color: "white",
   },
