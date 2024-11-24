@@ -10,22 +10,44 @@ import React from "react";
 import moment from "moment";
 import { Colors } from "./../../constants/Colors.ts";
 import UserTripCard from "./UserTripCard";
+import { useRouter } from "expo-router";
 
 const { width, height } = Dimensions.get("window");
 
 export default function UserTripList({ userTrips }) {
+  const LatestTrip = userTrips[0].tripData;
+  const router = useRouter();
+
   return (
     <View>
       <View style={{ marginTop: -140 }}>
-        <Image
-          source={require("../../assets/images/placeholder.jpeg")}
-          style={{
-            width: width - 15,
-            height: height * 0.25,
-            objectFir: "cover",
-            borderRadius: 15,
-          }}
-        />
+        {LatestTrip.locationInfo?.photoRef ? (
+          <Image
+            source={{
+              uri:
+                "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=" +
+                LatestTrip.locationInfo?.photoRef +
+                "&key=" +
+                process.env.EXPO_PUBLIC_GOOGLE_MAP_KEY,
+            }}
+            style={{
+              width: width - 15,
+              height: height * 0.25,
+              objectFir: "cover",
+              borderRadius: 15,
+            }}
+          />
+        ) : (
+          <Image
+            source={require("../../assets/images/placeholder.jpeg")}
+            style={{
+              width: width - 15,
+              height: height * 0.25,
+              objectFir: "cover",
+              borderRadius: 15,
+            }}
+          />
+        )}
         <View style={{ marginTop: height * 0.01 }}>
           <Text
             style={{
@@ -62,7 +84,15 @@ export default function UserTripList({ userTrips }) {
               {userTrips[0]?.tripData?.travelerCount?.title}
             </Text>
           </View>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity
+            onPress={() =>
+              router.push({
+                pathname: "/trip-details",
+                params: { trip: JSON.stringify(userTrips[0]) },
+              })
+            }
+            style={styles.button}
+          >
             <Text style={styles.buttonText}>See your plan</Text>
           </TouchableOpacity>
         </View>

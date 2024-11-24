@@ -28,7 +28,7 @@ export default function Profile() {
     auth
       .signOut()
       .then(() => {
-        router.push("/auth/login"); // Átirányítás a bejelentkezési oldalra kijelentkezés után
+        router.push("/auth/login"); 
       })
       .catch((error) => {
         console.error("Sign out error: ", error);

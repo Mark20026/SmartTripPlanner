@@ -16,7 +16,13 @@ export default function UserTripCard({ trip }) {
       }}
     >
       <Image
-        source={require("../../assets/images/placeholder.jpeg")}
+        source={{
+          uri:
+            "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=" +
+            trip.tripData.locationInfo?.photoRef +
+            "&key=" +
+            process.env.EXPO_PUBLIC_GOOGLE_MAP_KEY,
+        }}
         style={{
           width: width * 0.3,
           height: height * 0.15,
