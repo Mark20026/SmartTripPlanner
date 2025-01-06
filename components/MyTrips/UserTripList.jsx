@@ -15,13 +15,19 @@ import { useRouter } from "expo-router";
 const { width, height } = Dimensions.get("window");
 
 export default function UserTripList({ userTrips }) {
-  const LatestTrip = userTrips[0].tripData;
   const router = useRouter();
+
+  // Rendezett lista dátum szerint
+  const sortedTrips = [...userTrips].sort(
+    (a, b) => new Date(a.tripData.startDate) - new Date(b.tripData.startDate)
+  );
+
+  const LatestTrip = sortedTrips[0]?.tripData; // Mindig a legelső (legkorábbi) utazás
 
   return (
     <View>
       <View style={{ marginTop: -140 }}>
-        {LatestTrip.locationInfo?.photoRef ? (
+        {LatestTrip?.locationInfo?.photoRef ? (
           <Image
             source={{
               uri:
@@ -55,7 +61,7 @@ export default function UserTripList({ userTrips }) {
               fontSize: height * 0.024,
             }}
           >
-            {userTrips[0]?.response?.trip?.destination}
+            {sortedTrips[0]?.response?.trip?.destination}
           </Text>
           <View
             style={{
@@ -71,7 +77,9 @@ export default function UserTripList({ userTrips }) {
                 color: "gray",
               }}
             >
-              {moment(userTrips[0]?.tripData?.startDate).format("DD MMM yyyy")}
+              {moment(sortedTrips[0]?.tripData?.startDate).format(
+                "DD MMM yyyy"
+              )}
             </Text>
             <Text
               style={{
@@ -80,15 +88,15 @@ export default function UserTripList({ userTrips }) {
                 color: "gray",
               }}
             >
-              {userTrips[0]?.tripData?.travelerCount?.icon}
-              {userTrips[0]?.tripData?.travelerCount?.title}
+              {sortedTrips[0]?.tripData?.travelerCount?.icon}
+              {sortedTrips[0]?.tripData?.travelerCount?.title}
             </Text>
           </View>
           <TouchableOpacity
             onPress={() =>
               router.push({
                 pathname: "/trip-details",
-                params: { trip: JSON.stringify(userTrips[0]) },
+                params: { trip: JSON.stringify(sortedTrips[0]) },
               })
             }
             style={styles.button}
@@ -96,8 +104,8 @@ export default function UserTripList({ userTrips }) {
             <Text style={styles.buttonText}>See your plan</Text>
           </TouchableOpacity>
         </View>
-        {userTrips.map((trip, index) => (
-          <UserTripCard trip={trip} key={index} />
+        {sortedTrips.map((trip, index) => (
+          <UserTripCard trip={trip} index={index} key={index} />
         ))}
       </View>
     </View>

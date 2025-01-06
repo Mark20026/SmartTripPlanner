@@ -66,9 +66,17 @@ export default function Trips() {
 
   return (
     <ScrollView style={styles.screen}>
-      <View>
-        <Text style={styles.heading}>{greeting}</Text>
-        <Text style={styles.headingName}>{userName ? userName : "Name"}</Text>
+      <View style={styles.headerContainer}>
+        <View>
+          <Text style={styles.heading}>{greeting}</Text>
+          <Text style={styles.headingName}>{userName ? userName : "Name"}</Text>
+        </View>
+        <TouchableOpacity
+          style={styles.addButton}
+          onPress={() => router.push("/trip/search")}
+        >
+          <Text style={styles.addButtonText}>+</Text>
+        </TouchableOpacity>
       </View>
       <View style={styles.noTrip}>
         {userTrips.length === 0 ? (
@@ -76,7 +84,6 @@ export default function Trips() {
             <Text style={styles.subText}>
               Your trips will be displayed here.
             </Text>
-
             <Text style={styles.subTextNoTrip}>No trips yet!</Text>
             <Text style={styles.subTextNoTrip2}>
               Let AI help you design your perfect trip. Get started now!
@@ -103,27 +110,48 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     height: "100%",
   },
+  headerContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: height * 0.03,
+  },
   heading: {
     fontFamily: "montserrat-bold",
-    fontSize: height * 0.04,
+    fontSize: height * 0.037,
     color: "black",
   },
   headingName: {
     fontFamily: "montserrat-bold",
-    fontSize: height * 0.035,
+    fontSize: height * 0.032,
     color: "black",
   },
-  subText: {
-    fontFamily: "montserrat",
-    fontSize: height * 0.02,
-    color: "grey",
-    marginTop: "5%",
+  addButton: {
+    width: width * 0.13,
+    height: height * 0.07,
+    borderRadius: 25,
+    backgroundColor: Colors.PRIMARY,
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: width * 0.05,
+  },
+  addButtonText: {
+    fontSize: height * 0.04,
+    color: "white",
+    fontFamily: "montserrat-bold",
+    textAlign: "center",
   },
   noTrip: {
     alignItems: "center",
     marginTop: "45%",
     paddingLeft: width * 0.1,
     paddingRight: width * 0.1,
+  },
+  subText: {
+    fontFamily: "montserrat",
+    fontSize: height * 0.02,
+    color: "grey",
+    marginTop: "5%",
   },
   subTextNoTrip: {
     fontFamily: "montserrat-medium",

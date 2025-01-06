@@ -5,14 +5,15 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import moment from "moment";
 import HotelList from "../../components/TripDetails/HotelList";
 import PlanList from "../../components/TripDetails/PlanList";
+import { useRouter } from "expo-router";
 
 const { width, height } = Dimensions.get("window");
 
 export default function TripDetails() {
   const navigation = useNavigation();
   const [userTrips, setUserTrips] = useState([]);
-  const { trip } = useLocalSearchParams();
-  const [tripDetails, setTripDetails] = useState();
+  const { tripIndex = 0 } = useLocalSearchParams();
+  const tripIndexes = parseInt(tripIndex, 10);
 
   useEffect(() => {
     navigation.setOptions({
@@ -20,9 +21,9 @@ export default function TripDetails() {
       headerTransparent: true,
       headerTitle: "",
     });
+
     const fetchUserTrips = async () => {
       try {
-        // Email lekérése az AsyncStorage-ból
         const userEmail = await AsyncStorage.getItem("email");
 
         if (!userEmail) {
@@ -30,7 +31,6 @@ export default function TripDetails() {
           return;
         }
 
-        // Trip adatok lekérése a backend API-ról
         const response = await fetch(
           `http://192.168.0.112:3000/api/getInfo?email=${userEmail}`
         );
@@ -38,9 +38,6 @@ export default function TripDetails() {
 
         if (response.ok) {
           setUserTrips(data);
-          console.log(userTrips);
-          console.log(userTrips[0]?.response?.trip?.hotel);
-          // Állapotba mentjük a trip adatokat
         } else {
           console.error("Failed to fetch trips:", data.error);
         }
@@ -52,22 +49,44 @@ export default function TripDetails() {
     fetchUserTrips();
   }, []);
 
+  if (!userTrips.length) {
+    return <Text>Loading...</Text>; // Betöltési állapot megjelenítése
+  }
+
+  const sortedTrips = [...userTrips].sort(
+    (a, b) => new Date(a.tripData.startDate) - new Date(b.tripData.startDate)
+  );
+
+  const LatestTrip = sortedTrips[tripIndexes]?.tripData;
+
   return (
     <ScrollView>
-      <Image
-        source={{
-          uri:
-            "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=" +
-            userTrips[0]?.tripData?.locationInfo?.photoRef +
-            "&key=" +
-            process.env.EXPO_PUBLIC_GOOGLE_MAP_KEY,
-        }}
-        style={{
-          width: "100%",
-          height: height * 0.35,
-          objectFir: "cover",
-        }}
-      />
+      {LatestTrip?.locationInfo?.photoRef ? (
+        <Image
+          source={{
+            uri:
+              "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=" +
+              LatestTrip?.locationInfo?.photoRef +
+              "&key=" +
+              process.env.EXPO_PUBLIC_GOOGLE_MAP_KEY,
+          }}
+          style={{
+            width: "100%",
+            height: height * 0.35,
+            objectFit: "cover",
+          }}
+        />
+      ) : (
+        <Image
+          source={require("../../assets/images/placeholder.jpeg")}
+          style={{
+            width: "100%",
+            height: height * 0.35,
+            objectFit: "cover",
+          }}
+        />
+      )}
+
       <View
         style={{
           borderTopLeftRadius: 30,
@@ -84,8 +103,9 @@ export default function TripDetails() {
             fontSize: height * 0.024,
           }}
         >
-          {userTrips[0]?.response?.trip?.destination}
+          {sortedTrips[tripIndexes]?.response?.trip?.destination}
         </Text>
+
         <View
           style={{
             display: "flex",
@@ -101,7 +121,9 @@ export default function TripDetails() {
               color: "gray",
             }}
           >
-            {moment(userTrips[0]?.tripData?.startDate).format("DD MMM yyyy")}
+            {moment(sortedTrips[tripIndexes]?.tripData?.startDate).format(
+              "DD MMM yyyy"
+            )}
           </Text>
           <Text
             style={{
@@ -110,9 +132,13 @@ export default function TripDetails() {
               color: "gray",
             }}
           >
-            - {moment(userTrips[0]?.tripData?.endDate).format("DD MMM yyyy")}
+            -{" "}
+            {moment(sortedTrips[tripIndexes]?.tripData?.endDate).format(
+              "DD MMM yyyy"
+            )}
           </Text>
         </View>
+
         <Text
           style={{
             fontFamily: "montserrat-medium",
@@ -120,13 +146,16 @@ export default function TripDetails() {
             color: "gray",
           }}
         >
-          {userTrips[0]?.tripData?.travelerCount?.icon}
-          {userTrips[0]?.tripData?.travelerCount?.title}
+          {sortedTrips[tripIndexes]?.tripData?.travelerCount?.icon}
+          {sortedTrips[tripIndexes]?.tripData?.travelerCount?.title}
         </Text>
 
-        <HotelList hotelList={userTrips[0]?.response?.trip?.hotels} />
-
-        <PlanList planList={userTrips[0]?.response?.trip?.itinerary} />
+        <HotelList
+          hotelList={sortedTrips[tripIndexes]?.response?.trip?.hotels}
+        />
+        <PlanList
+          planList={sortedTrips[tripIndexes]?.response?.trip?.itinerary}
+        />
       </View>
     </ScrollView>
   );

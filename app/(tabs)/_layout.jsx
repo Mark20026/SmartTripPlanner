@@ -52,12 +52,6 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="add_trips"
-        options={{
-          tabBarLabel: "Add Trip",
-        }}
-      />
-      <Tabs.Screen
         name="profile"
         options={{
           tabBarLabel: "Profile",

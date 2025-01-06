@@ -1,12 +1,21 @@
-import { View, Text, Image, Dimensions } from "react-native";
+import { View, Text, Image, Dimensions, TouchableOpacity } from "react-native";
 import React from "react";
 import moment from "moment";
+import { useRouter } from "expo-router";
 
 const { width, height } = Dimensions.get("window");
 
-export default function UserTripCard({ trip }) {
+export default function UserTripCard({ trip, index }) {
+  const router = useRouter();
+
   return (
-    <View
+    <TouchableOpacity
+      onPress={() =>
+        router.push({
+          pathname: "/trip-details",
+          params: { tripIndex: index },
+        })
+      }
       style={{
         marginTop: "5%",
         display: "flex",
@@ -26,7 +35,7 @@ export default function UserTripCard({ trip }) {
         style={{
           width: width * 0.3,
           height: height * 0.15,
-          objectFir: "cover",
+          objectFit: "cover",
           borderRadius: 15,
         }}
       />
@@ -56,6 +65,6 @@ export default function UserTripCard({ trip }) {
           {trip.tripData?.travelerCount?.title}
         </Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
