@@ -65,4 +65,23 @@ tripRouter.get("/api/getInfo", async (req, res) => {
   }
 });
 
+tripRouter.delete("/api/deleteTrip", async (req, res) => {
+  const { email, tripId } = req.body;
+
+  try {
+    const result = await Trip.deleteOne({ email: email, _id: tripId });
+
+    if (result.deletedCount === 0) {
+      return res
+        .status(404)
+        .json({ error: "Trip not found or already deleted" });
+    }
+
+    res.status(200).json({ message: "Trip deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting trip:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 module.exports = tripRouter;

@@ -1,4 +1,11 @@
-import { View, Text, Image, Dimensions, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  Dimensions,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { useNavigation, useLocalSearchParams } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -6,6 +13,8 @@ import moment from "moment";
 import HotelList from "../../components/TripDetails/HotelList";
 import PlanList from "../../components/TripDetails/PlanList";
 import { useRouter } from "expo-router";
+import { MaterialIcons } from "@expo/vector-icons";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 
 const { width, height } = Dimensions.get("window");
 
@@ -14,6 +23,7 @@ export default function TripDetails() {
   const [userTrips, setUserTrips] = useState([]);
   const { tripIndex = 0 } = useLocalSearchParams();
   const tripIndexes = parseInt(tripIndex, 10);
+  const router = useRouter();
 
   useEffect(() => {
     navigation.setOptions({
@@ -48,6 +58,31 @@ export default function TripDetails() {
 
     fetchUserTrips();
   }, []);
+
+  const handleDeleteTrip = async (index) => {
+    try {
+      const tripId = sortedTrips[index]._id;
+      const userEmail = await AsyncStorage.getItem("email");
+
+      const response = await fetch("http://192.168.0.112:3000/api/deleteTrip", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: userEmail, tripId }),
+      });
+
+      if (response.ok) {
+        const updatedTrips = sortedTrips.filter((_, i) => i !== index);
+        setUserTrips(updatedTrips);
+
+        router.push("/(tabs)/trips");
+      } else {
+        const errorData = await response.json();
+        console.error("Failed to delete trip:", errorData.error);
+      }
+    } catch (error) {
+      console.error("Error deleting trip:", error);
+    }
+  };
 
   if (!userTrips.length) {
     return <Text>Loading...</Text>; // Betöltési állapot megjelenítése
@@ -97,14 +132,26 @@ export default function TripDetails() {
           backgroundColor: "white",
         }}
       >
-        <Text
+        <View
           style={{
-            fontFamily: "montserrat-bold",
-            fontSize: height * 0.024,
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
           }}
         >
-          {sortedTrips[tripIndexes]?.response?.trip?.destination}
-        </Text>
+          <Text
+            style={{
+              fontFamily: "montserrat-bold",
+              fontSize: height * 0.024,
+            }}
+          >
+            {sortedTrips[tripIndexes]?.response?.trip?.destination}
+          </Text>
+          <TouchableOpacity onPress={() => handleDeleteTrip(tripIndexes)}>
+            <FontAwesome6 name="trash-can" size={24} color="rgb(240, 22, 29)" />
+          </TouchableOpacity>
+        </View>
 
         <View
           style={{

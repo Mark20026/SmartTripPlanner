@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Colors } from "./../../constants/Colors.ts";
-import { useRouter } from "expo-router";
+import { useRouter, useFocusEffect } from "expo-router";
 import UserTripList from "./../../components/MyTrips/UserTripList";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -21,7 +21,7 @@ export default function Trips() {
   const router = useRouter();
 
   // Napszak alapú üdvözlés
-  useEffect(() => {
+  React.useEffect(() => {
     const currentHour = new Date().getHours();
     if (currentHour < 12) {
       setGreeting("Good morning ☀️");
@@ -33,36 +33,36 @@ export default function Trips() {
   }, []);
 
   // Trip adatok lekérése
-  useEffect(() => {
-    const fetchUserTrips = async () => {
-      try {
-        // Email lekérése az AsyncStorage-ból
-        const userEmail = await AsyncStorage.getItem("email");
+  const fetchUserTrips = async () => {
+    try {
+      const userEmail = await AsyncStorage.getItem("email");
 
-        if (!userEmail) {
-          console.error("No email found in AsyncStorage");
-          return;
-        }
-
-        // Trip adatok lekérése a backend API-ról
-        const response = await fetch(
-          `http://192.168.0.112:3000/api/getInfo?email=${userEmail}`
-        );
-        const data = await response.json();
-
-        if (response.ok) {
-          setUserTrips(data);
-          console.log(userTrips); // Állapotba mentjük a trip adatokat
-        } else {
-          console.error("Failed to fetch trips:", data.error);
-        }
-      } catch (error) {
-        console.error("Error fetching user trips:", error);
+      if (!userEmail) {
+        console.error("No email found in AsyncStorage");
+        return;
       }
-    };
 
-    fetchUserTrips();
-  }, []);
+      const response = await fetch(
+        `http://192.168.0.112:3000/api/getInfo?email=${userEmail}`
+      );
+      const data = await response.json();
+
+      if (response.ok) {
+        setUserTrips(data);
+      } else {
+        console.error("Failed to fetch trips:", data.error);
+      }
+    } catch (error) {
+      console.error("Error fetching user trips:", error);
+    }
+  };
+
+  // Frissítés, amikor a kezdőlap fókuszba kerül
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchUserTrips();
+    }, [])
+  );
 
   return (
     <ScrollView style={styles.screen}>
