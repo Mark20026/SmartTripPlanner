@@ -10,6 +10,7 @@ import React, { useEffect, useState } from "react";
 import { Colors } from "./../../constants/Colors.ts";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useRouter } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { width, height } = Dimensions.get("window");
 
@@ -17,22 +18,27 @@ export default function Profile() {
   const [userName, setUserName] = useState("");
   const router = useRouter();
 
-  useEffect(() => {
-    const currentUser = auth.currentUser;
-    if (currentUser) {
-      setUserName(currentUser.displayName);
-    }
-  }, []);
-
-  const handleLogout = () => {
-    auth
-      .signOut()
-      .then(() => {
-        router.push("/auth/login"); 
-      })
-      .catch((error) => {
-        console.error("Sign out error: ", error);
+  const handleLogout = async () => {
+    try {
+      const token = await AsyncStorage.getItem("auth-token");
+      const response = await fetch("http://192.168.0.112:3000/api/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-auth-token": token,
+        },
       });
+
+      if (response.ok) {
+        await AsyncStorage.removeItem("auth-token");
+        router.push("/auth/login");
+      } else {
+        const data = await response.json();
+        console.error("Failed to log out:", data.error);
+      }
+    } catch (error) {
+      console.error("Logout error:", error); // Ez akkor fut le, ha nem sikerül kapcsolódni a backendhez
+    }
   };
 
   return (

@@ -62,7 +62,7 @@ export default function Register() {
       .then((response) => {
         // Sikeres regisztráció
         ToastAndroid.show("Account created successfully!", ToastAndroid.SHORT);
-        router.push("/trips"); // Navigálás az "Trips" oldalra
+        router.push("auth/login"); // Navigálás az "Trips" oldalra
       })
       .catch((error) => {
         console.log("Error:", error); // Írd ki az Axios hibát a konzolba

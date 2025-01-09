@@ -3,6 +3,7 @@ const bcryptjs = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const auth = require("../middleware/auth");
 const express = require("express");
+const RevokedToken = require("../models/RevokedToken");
 
 const authRouter = express.Router();
 
@@ -74,6 +75,19 @@ authRouter.post("/tokenIsValid", async (req, res) => {
 authRouter.get("/", auth, async (req, res) => {
   const user = await User.findById(req.user);
   res.json({ ...user.doc, token: req.token });
+});
+
+//logout
+authRouter.post("/api/logout", auth, async (req, res) => {
+  try {
+    const newRevokedToken = new RevokedToken({ token: req.token });
+    await newRevokedToken.save();
+
+    res.status(200).json({ msg: "Logged out successfully" }); // JSON válasz
+  } catch (error) {
+    console.error("Error logging out:", error);
+    res.status(500).json({ error: "Failed to log out" }); // JSON hibaüzenet
+  }
 });
 
 module.exports = authRouter;
