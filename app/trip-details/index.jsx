@@ -196,6 +196,32 @@ export default function TripDetails() {
           {sortedTrips[tripIndexes]?.tripData?.travelerCount?.icon}
           {sortedTrips[tripIndexes]?.tripData?.travelerCount?.title}
         </Text>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            marginTop: height * 0.02,
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: "montserrat-bold",
+              fontSize: height * 0.02,
+              color: "gray",
+            }}
+          >
+            Estimated price:{" "}
+          </Text>
+          <Text
+            style={{
+              fontFamily: "montserrat-medium",
+              fontSize: height * 0.02,
+              color: "green",
+            }}
+          >
+            {sortedTrips[tripIndexes]?.response?.trip?.estimated_total_cost}
+          </Text>
+        </View>
 
         <HotelList
           hotelList={sortedTrips[tripIndexes]?.response?.trip?.hotels}

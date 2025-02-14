@@ -23,13 +23,17 @@ export default function PlanCard({ activities }) {
       }}
     >
       <Image
-        source={{
-          uri:
-            "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=" +
-            photoRef +
-            "&key=" +
-            process.env.EXPO_PUBLIC_GOOGLE_MAP_KEY,
-        }}
+        source={
+          activities.activity.toLowerCase().includes("arrive")
+            ? require("../../assets/images/airport-placeholder.jpg")
+            : {
+                uri:
+                  "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=" +
+                  photoRef +
+                  "&key=" +
+                  process.env.EXPO_PUBLIC_GOOGLE_MAP_KEY,
+              }
+        }
         style={{
           width: "100%",
           height: height * 0.17,
