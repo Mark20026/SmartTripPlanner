@@ -18,6 +18,17 @@ export default function Profile() {
   const [userName, setUserName] = useState("");
   const router = useRouter();
 
+  const fetchUserName = async () => {
+    try {
+      const storedName = await AsyncStorage.getItem("firstName");
+      if (storedName) {
+        setUserName(storedName);
+      }
+    } catch (error) {
+      console.error("Error fetching user name:", error);
+    }
+  };
+
   const handleLogout = async () => {
     try {
       const token = await AsyncStorage.getItem("auth-token");
@@ -40,6 +51,10 @@ export default function Profile() {
       console.error("Logout error:", error); // Ez akkor fut le, ha nem sikerül kapcsolódni a backendhez
     }
   };
+
+  useEffect(() => {
+    fetchUserName();
+  }, []);
 
   return (
     <View style={styles.screen}>

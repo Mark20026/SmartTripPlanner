@@ -40,5 +40,3 @@ export const chatSession = model.startChat({
     },
   ],
 });
-
-

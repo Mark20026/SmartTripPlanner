@@ -49,18 +49,20 @@ export default function Login() {
       });
 
       // Successful login
-      const { token, userId } = response.data;
+      const { token, userId, firstName } = response.data;
       console.log("Login successful", response.data);
       ToastAndroid.show("Login successful!", ToastAndroid.SHORT);
 
       // Store the token
       await AsyncStorage.setItem("auth-token", token); // Token elmentése
-      await AsyncStorage.setItem("userId", userId); // (opcionális) userId elmentése
+      await AsyncStorage.setItem("userId", userId);
       await AsyncStorage.setItem("email", email);
+      await AsyncStorage.setItem("firstName", firstName);
 
       console.log(token);
       console.log(userId);
       console.log(email);
+      console.log(firstName);
 
       // Navigate to trips
       router.push("/trips");

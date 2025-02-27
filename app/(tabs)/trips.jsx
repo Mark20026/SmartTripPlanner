@@ -36,10 +36,15 @@ export default function Trips() {
   const fetchUserTrips = async () => {
     try {
       const userEmail = await AsyncStorage.getItem("email");
+      const storedName = await AsyncStorage.getItem("firstName");
 
       if (!userEmail) {
         console.error("No email found in AsyncStorage");
         return;
+      }
+
+      if (storedName) {
+        setUserName(storedName);
       }
 
       const response = await fetch(
