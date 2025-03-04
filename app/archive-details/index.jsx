@@ -18,7 +18,7 @@ import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 
 const { width, height } = Dimensions.get("window");
 
-export default function TripDetails() {
+export default function ArchiveDetails() {
   const navigation = useNavigation();
   const [userTrips, setUserTrips] = useState([]);
   const { tripIndex = 0 } = useLocalSearchParams();
@@ -42,7 +42,7 @@ export default function TripDetails() {
         }
 
         const response = await fetch(
-          `http://192.168.0.112:3000/api/getInfo?email=${userEmail}`
+          `http://192.168.0.112:3000/api/getInfoArchived?email=${userEmail}`
         );
         const data = await response.json();
 

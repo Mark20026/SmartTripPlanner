@@ -10,7 +10,7 @@ export default function HotelCard({ item }) {
     GetGooglePhotoRef();
   }, []);
   const GetGooglePhotoRef = async () => {
-    const result = await GetPhotoRef(item.name);
+    const result = await GetPhotoRef(item.hotelName || item.name);
     setPhotoRef(result?.results[0]?.photos[0]?.photo_reference);
   };
   return (
@@ -37,7 +37,7 @@ export default function HotelCard({ item }) {
             marginTop: height * 0.01,
           }}
         >
-          {item.name}
+          {item.name || item.hotelName}
         </Text>
         <View
           style={{

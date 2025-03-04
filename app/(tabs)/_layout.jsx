@@ -36,6 +36,9 @@ export default function TabLayout() {
           } else if (route.name === "profile") {
             iconName = focused ? "user" : "user-o"; // Different icons for focused and unfocused
             return <FontAwesome name={iconName} size={size} color={color} />;
+          } else if (route.name === "archive") {
+            iconName = focused ? "archive" : "archive"; // Different icons for focused and unfocused
+            return <FontAwesome name={iconName} size={size} color={color} />;
           }
         },
         tabBarActiveTintColor: Colors.SECONDARY,
@@ -49,6 +52,12 @@ export default function TabLayout() {
         name="trips"
         options={{
           tabBarLabel: "My Trips",
+        }}
+      />
+      <Tabs.Screen
+        name="archive"
+        options={{
+          tabBarLabel: "Archive",
         }}
       />
       <Tabs.Screen
