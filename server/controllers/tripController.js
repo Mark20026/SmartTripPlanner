@@ -110,7 +110,7 @@ tripRouter.delete("/api/deleteTrip", async (req, res) => {
 });
 
 // Scheduling archive
-cron.schedule("0 * * * *", async () => {
+cron.schedule("* * * * *", async () => {
   try {
     const today = new Date();
     today.setUTCHours(0, 0, 0, 0);

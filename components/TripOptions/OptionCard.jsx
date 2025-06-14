@@ -32,7 +32,7 @@ export default function OptionCard({ option, selectedOption }) {
         </Text>
         <Text
           style={{
-            fontSize: height * 0.017,
+            fontSize: height * 0.015,
             fontFamily: "montserrat",
             color: "gray",
           }}
@@ -42,7 +42,7 @@ export default function OptionCard({ option, selectedOption }) {
       </View>
       <Text
         style={{
-          fontSize: height * 0.04,
+          fontSize: height * 0.037,
         }}
       >
         {option?.icon}

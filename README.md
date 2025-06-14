@@ -1,50 +1,85 @@
-# Welcome to your Expo app 👋
+🧳 Smart Trip Planner
+Ez a projekt egy mobilalkalmazás, amely segít az utazások egyszerű és intelligens megtervezésében. Az alkalmazás React Native (Expo) keretrendszeren fut, a backend Node.js és Express alapú, a MongoDB szolgál adatbázisként, és a Google Places API + Gemini AI biztosítja az intelligens útvonaltervezést.
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+🚀 Projekt indítása
+Backend beállítása (Node.js + Express)
+📦 Függőségek telepítése
+Telepítse a szükséges függőségeket az alábbi parancs futtatásával:
+npm install
 
-## Get started
+▶️ App indítása
+Mielőtt elindítaná az alkalmazást, győződjön meg róla, hogy az Android emulátor fut. Ehhez nyissa meg az Android Studio-t és indítsa el az emulátort, ha még nem tette meg.
 
-1. Install dependencies
+Ha még nincs emulátora, kövesse az alábbi lépésekben leírt instrukciókat az emulátor létrehozásához.
 
-   ```bash
-   npm install
-   ```
+Az alkalmazás elindításához használja az alábbi parancsot:
+npm start
+Ez elindítja az Expo fejlesztői szervert, és megnyitja a böngészőt.
 
-2. Start the app
+Emulátorban futtatás:
+A böngészőben megjelenik egy QR-kód. Ha az emulátoron dolgozik, akkor nem szükséges a QR-kódot beolvasni.
 
-   ```bash
-    npx expo start
-   ```
+Nyomja meg az A billentyűt a terminálban (ha az Android emulátor fut), hogy elindítsa az alkalmazást az emulátoron.
 
-In the output, you'll find options to open the app in a
+Fontos: A parancs végrehajtása után az alkalmazás automatikusan telepítésre kerül az emulátorra.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+📁 Navigáljon a server/ mappába:
+cd ./server/
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+▶️ Backend indítása
+A backend indításához futtassa az alábbi parancsot:
+node server.js
 
-## Get a fresh project
+🧠 Fő technológiák
+Frontend: React Native (Expo), React Navigation
 
-When you're ready, run:
+Backend: Node.js, Express.js
 
-```bash
-npm run reset-project
-```
+Adatbázis: MongoDB (Mongoose)
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+API-k: Google Places API, Gemini AI
 
-## Learn more
+📱 Tesztelés Android emulátoron keresztül
 
-To learn more about developing your project with Expo, look at the following resources:
+1. Android Studio telepítése
+   Töltse le az Android Studio legfrissebb verzióját a hivatalos weboldalról, a saját operációs rendszeréhez (Windows / macOS / Linux).
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+Telepítés:
+Indítsa el a telepítőt és kövesse a varázslót.
 
-## Join the community
+Válassza ki az alábbi komponenseket (alapértelmezetten kiválasztva):
 
-Join our community of developers creating universal apps.
+✅ Android SDK
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+✅ Android Virtual Device (AVD)
+
+✅ Android SDK Platform-tools
+
+Indítsa el az Android Studio-t, és válassza a Standard setup lehetőséget. Az első indítás után automatikusan megnyílik a Welcome to Android Studio képernyő.
+
+📲 Android emulátor létrehozása
+
+1. Nyissa meg az AVD Manager-t:
+   Az Android Studio főképernyőjén válassza ki a felső menüben:
+
+Tools → Device Manager
+
+2. Új emulátor létrehozása:
+   Kattintson a Create Device gombra.
+
+Válassza ki a kívánt készüléket (pl. Pixel 6), majd kattintson Next.
+
+3. Rendszerkép (system image) kiválasztása:
+   Válassza ki az egyik elérhető Android verziót (ajánlott: API 33 (Android 13) vagy újabb).
+
+Ha nincs letöltve, kattintson a Download gombra.
+
+A letöltés után kattintson Next.
+
+4. Emulátor beállítások:
+   Adja meg az emulátor nevét (pl. Pixel6-API33).
+
+Ellenőrizze a beállításokat, majd kattintson Finish.
+
+5. Emulátor indítása:
+   Az eszközlistában kattintson a Play ▶️ ikonra az emulátor indításához.

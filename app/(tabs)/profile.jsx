@@ -77,9 +77,6 @@ export default function Profile() {
         <TouchableOpacity onPress={handleLogout}>
           <Text style={styles.settingText}>Logout</Text>
         </TouchableOpacity>
-
-        {/* Jelszó megváltoztatása gomb */}
-        <Text style={styles.settingText}>Change password</Text>
       </View>
     </View>
   );

@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: width * 0.25,
     backgroundColor: Colors.SECONDARY,
     borderRadius: 10,
-    marginTop: height * 0.13,
+    marginTop: height * 0.05,
   },
   buttonText: {
     fontSize: width * 0.04,
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat",
   },
   travelInfo: {
-    fontSize: height * 0.027,
+    fontSize: height * 0.024,
     fontFamily: "montserrat-medium",
   },
   infoBox: {

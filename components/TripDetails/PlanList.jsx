@@ -20,7 +20,6 @@ export default function PlanList({ planList }) {
       {/* Iterating over the days */}
       {planList && planList.length > 0 ? (
         planList.map((dayPlan) => {
-          // Kinyerjük a nap számát a "day1", "day2" stb. szövegből
           const dayIndex =
             parseInt(dayPlan?.day.match(/\d+/)?.[0], 10) - 1 || 0;
 

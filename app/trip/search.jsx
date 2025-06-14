@@ -83,12 +83,12 @@ export default function Search() {
           },
         }}
       />
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={styles.button2}
         onPress={() => router.push("/trip/traveler_count")}
       >
         <Text style={styles.buttonText2}>Continue</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 }

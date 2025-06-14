@@ -58,7 +58,7 @@ export default function PlanCard({ activities }) {
           marginTop: height * 0.01,
         }}
       >
-        ℹ️ {activities.details}
+        ℹ️ {activities.details || activities.place_details}
       </Text>
       <Text
         style={{

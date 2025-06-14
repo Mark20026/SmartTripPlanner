@@ -27,7 +27,7 @@ export default function Calendar() {
       setStartDate(moment(date));
     } else {
       setEndDate(moment(date));
-    }
+  }
   };
   const OnDateSelectionContinue = () => {
     if (!startDate && !endDate) {
@@ -43,7 +43,7 @@ export default function Calendar() {
       endDate: endDate.toISOString(),
       totalNoDays: totalNoDays + 1,
     });
-    router.push("/trip/budget")
+    router.push("/trip/budget");
   };
 
   useEffect(() => {
@@ -67,10 +67,7 @@ export default function Calendar() {
           color: "white",
         }}
       />
-      <TouchableOpacity
-        style={styles.button}
-        onPress={OnDateSelectionContinue}
-      >
+      <TouchableOpacity style={styles.button} onPress={OnDateSelectionContinue}>
         <Text style={styles.buttonText}>Continue</Text>
       </TouchableOpacity>
     </View>
@@ -95,7 +92,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: width * 0.25,
     backgroundColor: Colors.SECONDARY,
     borderRadius: 10,
-    marginTop: height * 0.3,
+    marginTop: height * 0.2,
   },
   buttonText: {
     fontSize: width * 0.04,
